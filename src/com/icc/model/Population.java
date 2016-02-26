@@ -1,6 +1,8 @@
 package com.icc.model;
 
+import com.icc.service.LifeHelper;
 
+import java.io.*;
 
 /**
  * Created by endocron on 2/25/2016.
@@ -11,6 +13,46 @@ public class Population {
 
     public Population (int row, int col){
         this.members = new LifeForm[row][col];
+    }
+
+    public Population(String fName) {
+        LifeHelper lh = new LifeHelper();
+        LifeForm lifeForm;
+        BufferedReader br = null;
+        int rows,cols;
+
+        try {
+            rows = lh.countLines(fName);
+
+            String currentLine;
+            br = new BufferedReader(new FileReader(fName));
+            currentLine = br.readLine();
+
+            cols = currentLine.length();
+            System.out.println("The number of rows are " + rows);
+            System.out.println("The number of cols are " + cols);
+
+            this.members = new LifeForm[rows][cols];
+
+            for(int row = 0; row < rows; row++) {
+                System.out.println(currentLine);
+                for (int col = 0; col < currentLine.length(); col++) {
+                    lifeForm = new LifeForm(currentLine.charAt(col) != '.' ? true : false, new Point(row, col));
+                    this.addMember(lifeForm);
+                }
+                currentLine = br.readLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null)br.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
     }
 
     public void processGeneration() {
@@ -58,7 +100,5 @@ public class Population {
             System.out.print('\n');
         }
     }
-
-
 
 }

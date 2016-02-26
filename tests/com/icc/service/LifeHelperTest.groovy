@@ -1,8 +1,7 @@
 package com.icc.service
 
-
-import groovy.util.GroovyTestCase;
-import junit.*
+import com.icc.model.LifeForm
+import com.icc.model.Point
 
 
 /**
@@ -12,6 +11,9 @@ class LifeHelperTest extends groovy.util.GroovyTestCase {
 
     private final static String fName = "C:\\data\\popState1.txt";
     private LifeHelper lifeHelper;
+
+//    private final static Point p = new Point(3,4);
+//    private LifeForm lifeForm = new LifeForm(false, p);
 
     void setUp() {
         super.setUp();
@@ -27,7 +29,7 @@ class LifeHelperTest extends groovy.util.GroovyTestCase {
 
         int lines = lifeHelper.countLines(fName);
 
-        assert lines == 8;
+        assert lines == 6;
 
     }
 }
