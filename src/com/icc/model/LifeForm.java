@@ -1,5 +1,7 @@
 package com.icc.model;
 
+import java.util.*;
+
 /**
  * Created by endocron on 2/25/2016.
  *
@@ -13,24 +15,17 @@ public class LifeForm {
 
     private Point location;
     private Boolean alive;
-    private Boolean[] neighbors;
+    private Neighbors neighbors;
 
     public LifeForm(Boolean alive, Point loc) {
         this.alive = alive;
         this.location = loc;
-        this.neighbors = new Boolean[8];
+        this.neighbors = new Neighbors();
     }
 
     public LifeForm() {
         alive = false;
-    }
-
-    public Boolean[] getNeighbors() {
-        return neighbors;
-    }
-
-    public void setNeighbors(Boolean[] neighbors) {
-        this.neighbors = neighbors;
+        this.neighbors = new Neighbors();
     }
 
     public Point getLocation() {
@@ -45,12 +40,23 @@ public class LifeForm {
         return alive;
     }
 
+    public int getNumberOfneighbors() {
+        return neighbors.getNumberOfNeighbors();
+    }
+
+    public void setNeighbor(Point p) {
+        neighbors.addNeighbor(p);
+    }
+
+
+
     public void create() {
+        neighbors.clearNeighbors();
         this.alive = true;
     }
 
     public void kill() {
-        this.alive = false;
+        neighbors.clearNeighbors(); this.alive = false;
     }
 
 

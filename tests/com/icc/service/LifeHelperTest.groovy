@@ -1,23 +1,20 @@
 package com.icc.service
 
-import com.icc.model.LifeForm
-import com.icc.model.Point
-
+import com.icc.model.Population
 
 /**
- * Created by endocron on 2/25/2016.
+ * Created by jgordon on 2/27/2016.
  */
-class LifeHelperTest extends groovy.util.GroovyTestCase {
+class LifeHelperTest extends GroovyTestCase {
 
-    private final static String fName = "C:\\data\\popState1.txt";
-    private LifeHelper lifeHelper;
+    private final static String fName = "C:\\data\\popState1.txt"
+    private LifeHelper lifeHelper
+    private Population fPop = new Population(fName)
 
-//    private final static Point p = new Point(3,4);
-//    private LifeForm lifeForm = new LifeForm(false, p);
 
     void setUp() {
-        super.setUp();
-        lifeHelper = new LifeHelper();
+        super.setUp()
+        lifeHelper = new LifeHelper()
 
     }
 
@@ -26,10 +23,14 @@ class LifeHelperTest extends groovy.util.GroovyTestCase {
     }
 
     void testCountLines() {
+        int lines = lifeHelper.countLines(fName)
 
-        int lines = lifeHelper.countLines(fName);
+        assert lines == 6
+    }
 
-        assert lines == 6;
+    void testProcessGeneration() {
+        fPop =lifeHelper.processGeneration(fPop)
 
+        assert fPop.getMembers()[0][1].isAlive()
     }
 }
