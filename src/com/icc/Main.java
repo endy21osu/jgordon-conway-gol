@@ -9,7 +9,14 @@ public class Main {
     public static void main(String[] args) {
 
         String fName = "C:\\data\\popState1.txt";
-        LifeHelper lf = new LifeHelper();
+        LifeHelper lf = new LifeHelper() ;
+
+        System.out.println(" args " + args.length);
+
+        if( args.length > 1 ){
+            System.out.println(" file " + args[0]);
+            fName = args[0];
+        }
 
         Population pop = new Population(fName);
         System.out.println("First pop");
