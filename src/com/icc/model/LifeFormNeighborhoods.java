@@ -45,14 +45,24 @@ public class LifeFormNeighborhoods {
 
     }
 
-    public int getHeight() {
+    public int getMaxHeight() {
         return neighborsHoodOfLifeForms.size() > 0 ? Collections.max(neighborsHoodOfLifeForms.keySet()) : 0;
     }
 
-    public int getWidth() {
+    public int getMaxWidth() {
         Set<Integer> widths = new HashSet<>();
         neighborsHoodOfLifeForms.entrySet().stream().forEach(add -> widths.add(add.getValue().getWidth()));
         return widths.size() > 0 ? Collections.max(widths) : 0;
+    }
+
+    public int getMinHeight() {
+        return neighborsHoodOfLifeForms.size() > 0 ? Collections.min(neighborsHoodOfLifeForms.keySet()) : 0;
+    }
+
+    public int getMinWidth() {
+        Set<Integer> widths = new HashSet<>();
+        neighborsHoodOfLifeForms.entrySet().stream().forEach(add -> widths.add(add.getValue().getWidth()));
+        return widths.size() > 0 ? Collections.min(widths) : 0;
     }
 
 }

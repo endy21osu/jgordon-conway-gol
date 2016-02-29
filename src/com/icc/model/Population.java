@@ -1,7 +1,5 @@
 package com.icc.model;
 
-import com.icc.service.LifeHelper;
-
 import java.io.*;
 
 /**
@@ -84,13 +82,13 @@ public class Population {
     }
 
     public void printPopulation(LifeFormNeighborhoods lifeFormHoods){
-//        int height = lifeFormHoods.getHeight() + 1, width = lifeFormHoods.getWidth() + 1;
-        System.out.println("height: " + height + " width: " + width);
-        System.out.println("The population model is: hello\n");
-
+        int maxHeight = lifeFormHoods.getMaxHeight() + 1, maxWidth = lifeFormHoods.getMaxWidth() + 1;
+        int minHeight = lifeFormHoods.getMinHeight() < 0 ? lifeFormHoods.getMinHeight() : 0, minWidth = lifeFormHoods.getMinWidth() < 0 ? lifeFormHoods.getMinWidth() : 0;
+        
+        System.out.println("The population model for height: " + (maxHeight - minHeight) + " width: " + (maxWidth - minWidth) + " is: \n");
         System.out.println();
-        for(int row = 0; row < height; row++) {
-            for(int col = 0; col <  width; col++) {
+        for(int row = minHeight; row < maxHeight; row++) {
+            for(int col = minWidth; col <  maxWidth; col++) {
                     System.out.print(lifeFormHoods.isAliveAt(new Point(row, col)) ? 'o' : '.');
             }
             System.out.print('\n');

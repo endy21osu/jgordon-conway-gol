@@ -40,13 +40,13 @@ class LifeFormNeighborhoodsTest extends GroovyTestCase {
     }
 
     void testGetHeight() {
-        int h = lfn.getHeight()
+        int h = lfn.getMaxHeight()
 
         assert h == 18
     }
 
     void testGetWidth() {
-        int w = lfn.getWidth()
+        int w = lfn.getMaxWidth()
 
         assert w == 15
     }
