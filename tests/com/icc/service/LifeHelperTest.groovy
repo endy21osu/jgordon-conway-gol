@@ -1,6 +1,6 @@
 package com.icc.service
 
-import com.icc.model.Population
+import com.icc.model.*
 
 /**
  * Created by jgordon on 2/27/2016.
@@ -22,15 +22,15 @@ class LifeHelperTest extends GroovyTestCase {
 
     }
 
-    void testCountLines() {
-        int lines = lifeHelper.countLines(fName)
-
-        assert lines == 6
-    }
-
     void testProcessGeneration() {
         fPop =lifeHelper.processGeneration(fPop)
 
-        assert fPop.getMembers()[0][1].isAlive()
+        assert fPop.getMembers().isAliveAt(new Point(0,1))
+    }
+
+    void testPrintCurrentPopulationIn() {
+        lifeHelper.printCurrentPopulationIn(fPop.getMembers());
+
+        assert true
     }
 }

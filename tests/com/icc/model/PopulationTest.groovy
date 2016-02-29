@@ -8,47 +8,52 @@ import com.icc.service.LifeHelper
 class PopulationTest extends GroovyTestCase {
 
     private String fName = "C:\\data\\popState1.txt"
+    private String fName2 = "C:\\data\\popState2.txt"
     private LifeHelper lf = new LifeHelper();
     private final static Point p = new Point(3,4)
     private Population rcPop
     private Population fPop
 
-    private LifeFormNeighborhoods lifeForm = new LifeFormNeighborhoods(false, p)
+    private LifeFormNeighborhoods lifeForm = new LifeFormNeighborhoods();
 
     void setUp() {
         super.setUp()
-        rcPop = new Population(5, 5)
+        rcPop = new Population(fName2);
         fPop = new Population(fName)
 
     }
 
-    void testProcessGeneration() {
+    void testGetWidth() {
+        int w = fPop.getWidth()
 
-        Population nextGen = lf.processGeneration(fPop)
+        assert w == 8
+    }
 
-        assert nextGen.getMembers()[0][1].isAlive();
+    void testGetHeight() {
+        int h = fPop.getHeight()
+
+        assert h == 6;
     }
 
     void testGetMembers() {
 
-        LifeFormNeighborhoods[][] tempMembres = fPop.getMembers()
+        LifeFormNeighborhoods tempMembres = fPop.getMembers()
 
-        assert tempMembres[1][0].isAlive()
+        assert tempMembres.isAliveAt(new Point(0,6))
 
     }
 
     void testAddMember() {
+        Point p = new Point(0,0)
+        fPop.addMember(p)
 
-        fPop.addMember(lifeForm)
-
-        assert !fPop.members[3][4].isAlive()
+        assert fPop.getMembers().isAliveAt(p)
     }
 
     void testSetMembers() {
-        rcPop.setMembers(new LifeFormNeighborhoods[2][2])
+        rcPop.setMembers(fPop.getMembers())
 
-        assert rcPop.members[0].length == 2
-        assert rcPop.members.length == 2
+        assert rcPop.getMembers().isAliveAt(new Point(1,0))
     }
 
     void testPrintPopulation() {

@@ -1,0 +1,166 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: LifeFormNeighborhoods</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.icc.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: LifeFormNeighborhoods (com.icc.model)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LifeFormNeighborhoods</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (21/ 21)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">LifeFormNeighborhoods$createLifeAt</td>
+  </tr>
+  <tr>
+    <td class="name">LifeFormNeighborhoods$getHeight$3</td>
+  </tr>
+  <tr>
+    <td class="name">LifeFormNeighborhoods$getNeighborsHoods$2</td>
+  </tr>
+  <tr>
+    <td class="name">LifeFormNeighborhoods$getWidth$1</td>
+  </tr>
+  <tr>
+    <td class="name">LifeFormNeighborhoods$isAliveAt</td>
+  </tr>
+  <tr>
+    <td class="name">LifeFormNeighborhoods$isAliveAt$0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (21/ 21)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.icc.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.*;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * Created by endocron on 2/25/2016.
+<i>7</i>&nbsp; *
+<i>8</i>&nbsp; * neighbor array
+<i>9</i>&nbsp; *      0 1 2
+<i>10</i>&nbsp; *      3 o 4
+<i>11</i>&nbsp; *      5 6 7
+<i>12</i>&nbsp; *
+<i>13</i>&nbsp; */
+<i>14</i>&nbsp;public class LifeFormNeighborhoods {
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    private HashMap&lt;Integer,LifeFormAddresses&gt; neighborsHoodOfLifeForms;
+<i>17</i>&nbsp;
+<b class="fc"><i>18</i>&nbsp;    public LifeFormNeighborhoods() {</b>
+<b class="fc"><i>19</i>&nbsp;        this.neighborsHoodOfLifeForms = new HashMap&lt;&gt;();</b>
+<b class="fc"><i>20</i>&nbsp;    }</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    public HashMap&lt;Integer, LifeFormAddresses&gt; getNeighborsHoods(){
+<b class="fc"><i>23</i>&nbsp;        return neighborsHoodOfLifeForms;</b>
+<i>24</i>&nbsp;    }
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    public Boolean isAliveAt(Point p) {
+<b class="fc"><i>27</i>&nbsp;        if(neighborsHoodOfLifeForms.containsKey(p.getRow())){</b>
+<b class="fc"><i>28</i>&nbsp;            LifeFormAddresses lfCol = neighborsHoodOfLifeForms.get(p.getRow());</b>
+<b class="fc"><i>29</i>&nbsp;            return lfCol.isAliveAt(p.getColumn());</b>
+<i>30</i>&nbsp;        }
+<b class="fc"><i>31</i>&nbsp;        return false;</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    public void createLifeAt(Point p) {
+<b class="fc"><i>35</i>&nbsp;        if(neighborsHoodOfLifeForms.containsKey(p.getRow())){</b>
+<b class="fc"><i>36</i>&nbsp;            LifeFormAddresses lfCol = neighborsHoodOfLifeForms.get(p.getRow());</b>
+<b class="fc"><i>37</i>&nbsp;            if(!lfCol.isAliveAt(p.getColumn())){</b>
+<b class="fc"><i>38</i>&nbsp;                lfCol.create(p.getColumn());</b>
+<i>39</i>&nbsp;            }
+<b class="fc"><i>40</i>&nbsp;        } else {</b>
+<b class="fc"><i>41</i>&nbsp;            LifeFormAddresses lfCol = new LifeFormAddresses();</b>
+<b class="fc"><i>42</i>&nbsp;            lfCol.create(p.getColumn());</b>
+<b class="fc"><i>43</i>&nbsp;            neighborsHoodOfLifeForms.put(p.getRow(), lfCol);</b>
+<i>44</i>&nbsp;        }
+<i>45</i>&nbsp;
+<b class="fc"><i>46</i>&nbsp;    }</b>
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    public int getHeight() {
+<b class="fc"><i>49</i>&nbsp;        return neighborsHoodOfLifeForms.size() &gt; 0 ? Collections.max(neighborsHoodOfLifeForms.keySet()) : 0;</b>
+<i>50</i>&nbsp;    }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    public int getWidth() {
+<b class="fc"><i>53</i>&nbsp;        Set&lt;Integer&gt; widths = new HashSet&lt;&gt;();</b>
+<b class="fc"><i>54</i>&nbsp;        neighborsHoodOfLifeForms.entrySet().stream().forEach(add -&gt; widths.add(add.getValue().getWidth()));</b>
+<b class="fc"><i>55</i>&nbsp;        return widths.size() &gt; 0 ? Collections.max(widths) : 0;</b>
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2016-02-29 07:29</div>
+</div>
+</body>
+</html>

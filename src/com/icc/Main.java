@@ -14,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String fName = "C:\\workspace\\jgordon-conway-gol\\data\\popState1.txt";
+        String fName = "C:\\workspace\\jgordon-conway-gol\\data\\popState9.txt";
         LifeHelper lf = new LifeHelper() ;
         long startTime, endTime;
         List<Integer> speedOfTest = new ArrayList<>();
@@ -30,9 +30,9 @@ public class Main {
         System.out.println("First pop");
         pop.printPopulation();
 
-        for(int testTimes = 1; testTimes > 0; testTimes--) {
+        for(int testTimes = 100; testTimes > 0; testTimes--) {
             startTime = System.currentTimeMillis();
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < 200; i++) {
 
                 pop = lf.processGeneration(pop);
 
@@ -51,23 +51,23 @@ public class Main {
 
         int sum = speedOfTest.stream().mapToInt(Integer::intValue).sum();
 
-//        try {
-//            PrintWriter writer = new PrintWriter(fName + "." + System.currentTimeMillis() + ".test", "UTF-8");
-//            writer.println("For test data set " + fName);
-//            writer.println("Total run time for this test is " + sum + " milliseconds");
-//            writer.println("Average run time is " + sum/speedOfTest.size() + " milliseconds");
-//
-//            speedOfTest.stream().forEach((time) -> {
-//                writer.println("Speed: " + time + " ms");
-//
-//            });
-//
-//
-//            writer.close();
-//        } catch (IOException ioe) {
-//            System.out.println("Failed to write test results to file");
-//            System.out.println(ioe.getMessage());
-//        }
+        try {
+            PrintWriter writer = new PrintWriter(fName + "." + System.currentTimeMillis() + ".test", "UTF-8");
+            writer.println("For test data set " + fName);
+            writer.println("Total run time for this test is " + sum + " milliseconds");
+            writer.println("Average run time is " + sum/speedOfTest.size() + " milliseconds");
+
+            speedOfTest.stream().forEach((time) -> {
+                writer.println("Speed: " + time + " ms");
+
+            });
+
+
+            writer.close();
+        } catch (IOException ioe) {
+            System.out.println("Failed to write test results to file");
+            System.out.println(ioe.getMessage());
+        }
 
         speedOfTest.stream().forEach((time) -> {
             System.out.println("Speed " + time);
@@ -76,11 +76,11 @@ public class Main {
         System.out.println("Total run time for this test is " + sum + " milliseconds");
         System.out.println("Average run time is " + sum/speedOfTest.size() + " milliseconds");
 
-        System.out.println("callcountWhoIsAround " + lf.callcountWhoIsAround);
-        System.out.println("callcountprocessGeneration " + lf.callcountprocessGeneration);
-        System.out.println("callcountwhoIsAroundNew " + lf.callcountwhoIsAroundNew);
-        System.out.println("callcountlifeSurvivesAt " + lf.callcountlifeSurvivesAt);
-        System.out.println("callcountlifeCreatesAt " + lf.callcountlifeCreatesAt);
+//        System.out.println("callcountWhoIsAround " + lf.callcountWhoIsAround);
+//        System.out.println("callcountprocessGeneration " + lf.callcountprocessGeneration);
+//        System.out.println("callcountwhoIsAroundNew " + lf.callcountwhoIsAroundNew);
+//        System.out.println("callcountlifeSurvivesAt " + lf.callcountlifeSurvivesAt);
+//        System.out.println("callcountlifeCreatesAt " + lf.callcountlifeCreatesAt);
 
 
     }

@@ -7,14 +7,14 @@ import com.icc.model.*;
  */
 public class LifeHelper {
 
-    public int callcountWhoIsAround = 0;
-    public int callcountprocessGeneration = 0;
-    public int callcountwhoIsAroundNew = 0;
-    public int callcountlifeSurvivesAt = 0;
-    public int callcountlifeCreatesAt = 0;
+//    public int callcountWhoIsAround = 0;
+//    public int callcountprocessGeneration = 0;
+//    public int callcountwhoIsAroundNew = 0;
+//    public int callcountlifeSurvivesAt = 0;
+//    public int callcountlifeCreatesAt = 0;
 
     public Population processGeneration(Population pop) {
-        callcountprocessGeneration++;
+//        callcountprocessGeneration++;
         LifeFormNeighborhoods lfHoods = pop.getMembers();
         LifeFormNeighborhoods newHoods = new LifeFormNeighborhoods();
 
@@ -28,7 +28,7 @@ public class LifeHelper {
     }
 
     private void whoIsAround(Point p, Population pop, LifeFormNeighborhoods newHoods) {
-        callcountWhoIsAround++;
+//        callcountWhoIsAround++;
         int scope = 1, row = p.getRow(), col = p.getColumn(), neighbors = 0;
         int width = pop.getWidth(), height = pop.getHeight();
         LifeFormNeighborhoods lfHoods = pop.getMembers();
@@ -70,7 +70,7 @@ public class LifeHelper {
     }
 
     private LifeFormNeighborhoods lifeSurvivesAt(Point p, LifeFormNeighborhoods lfHoods, Integer numberOfNeighbors){
-          callcountlifeSurvivesAt++;
+//          callcountlifeSurvivesAt++;
 //        System.out.println("numberOfNeighbors: " + numberOfNeighbors);
 //        System.out.println("Point: " + p.getRow() + ", " + p.getColumn());
 //        printCurrentPopulationIn(lfHoods);
@@ -85,7 +85,7 @@ public class LifeHelper {
     }
 
     private LifeFormNeighborhoods whoIsAroundNew(Point p, Population pop, LifeFormNeighborhoods newHoods) {
-        callcountwhoIsAroundNew++;
+//        callcountwhoIsAroundNew++;
         int scope = 1, row = p.getRow(), col = p.getColumn(), neighbors = 0;
         int width = pop.getWidth(), height = pop.getHeight();
         LifeFormNeighborhoods lfHoods = pop.getMembers();
@@ -130,7 +130,7 @@ public class LifeHelper {
 //        System.out.println("numberOfNeighbors: " + numberOfNeighbors);
 //        System.out.println("Point: " + p.getRow() + ", " + p.getColumn());
 //        printCurrentPopulationIn(lfHoods);
-        callcountlifeCreatesAt++;
+//        callcountlifeCreatesAt++;
         if(numberOfNeighbors == 3)
             lfHoods.createLifeAt(p);
 
