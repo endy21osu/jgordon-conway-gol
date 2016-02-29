@@ -13,7 +13,7 @@ class PopulationTest extends GroovyTestCase {
     private Population rcPop
     private Population fPop
 
-    private LifeForm lifeForm = new LifeForm(false, p)
+    private LifeFormNeighborhoods lifeForm = new LifeFormNeighborhoods(false, p)
 
     void setUp() {
         super.setUp()
@@ -31,7 +31,7 @@ class PopulationTest extends GroovyTestCase {
 
     void testGetMembers() {
 
-        LifeForm[][] tempMembres = fPop.getMembers()
+        LifeFormNeighborhoods[][] tempMembres = fPop.getMembers()
 
         assert tempMembres[1][0].isAlive()
 
@@ -45,7 +45,7 @@ class PopulationTest extends GroovyTestCase {
     }
 
     void testSetMembers() {
-        rcPop.setMembers(new LifeForm[2][2])
+        rcPop.setMembers(new LifeFormNeighborhoods[2][2])
 
         assert rcPop.members[0].length == 2
         assert rcPop.members.length == 2

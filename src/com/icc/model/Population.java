@@ -9,42 +9,52 @@ import java.io.*;
  */
 public class Population {
 
-    private LifeForm[][] members;
+    private LifeFormNeighborhoods lifeFormHoods;
+    private int height;
+    private int width;
 
-    public Population(Population oldPop){
-        this.members = oldPop.getMembers();
+    public int getWidth() {
+        return width;
     }
 
+    public int getHeight() {
+        return height;
+    }
 
-    public Population (int row, int col){
-        this.members = new LifeForm[row][col];
+    public Population(Population oldPop){
+        this.lifeFormHoods = oldPop.getMembers();
+    }
+
+    public Population (){
+        this.lifeFormHoods = new LifeFormNeighborhoods();
     }
 
     public Population(String fName) {
-        LifeHelper lh = new LifeHelper();
-        LifeForm lifeForm;
         BufferedReader br = null;
-        int rows,cols;
+        int cols;
 
         try {
-            rows = lh.countLines(fName);
-
             String currentLine;
             br = new BufferedReader(new FileReader(fName));
             currentLine = br.readLine();
+            width = currentLine.length();
+            this.lifeFormHoods = new LifeFormNeighborhoods();
 
-            cols = currentLine.length();
-
-            this.members = new LifeForm[rows][cols];
-
-            for(int row = 0; row < rows; row++) {
-                for (int col = 0; col < currentLine.length(); col++) {
-                    lifeForm = new LifeForm(currentLine.charAt(col) != '.', new Point(row, col));
-                    this.addMember(lifeForm);
+            int row = 0;
+            do {
+                cols = currentLine.length();
+                for (int col = 0; col < cols; col++) {
+                    char c = currentLine.charAt(col);
+                    if (c != '.') {
+                        this.lifeFormHoods.createLifeAt(new Point(row, col));
+                    }
                 }
-                currentLine = br.readLine();
-            }
 
+                currentLine = br.readLine();
+
+                row++;
+            }while (currentLine != null);
+            height = row++;
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -57,28 +67,31 @@ public class Population {
 
     }
 
-    public void addMember(LifeForm lifeForm) {
-        members[lifeForm.getLocation().getRow()][lifeForm.getLocation().getColumn()] = lifeForm;
+    public void addMember(Point p) {
+        lifeFormHoods.createLifeAt(p);
     }
 
-    public LifeForm[][] getMembers() {
-        return members;
+    public LifeFormNeighborhoods getMembers() {
+        return lifeFormHoods;
     }
 
-    public void setMembers(LifeForm[][] members) {
-        this.members = members;
+    public void setMembers(LifeFormNeighborhoods lifeFormHoods) {
+        this.lifeFormHoods = lifeFormHoods;
     }
 
     public void printPopulation(){
-        printPopulation(members);
+        printPopulation(lifeFormHoods);
     }
 
-    public void printPopulation(LifeForm[][] members){
-        System.out.println("The population model is: \n");
-        for(int row = 0; row < members.length; row++) {
-            for(int col = 0; col < members[row].length; col++) {
-                if(members[row][col] != null)
-                    System.out.print(members[row][col].isAlive() ? 'o' : '.');
+    public void printPopulation(LifeFormNeighborhoods lifeFormHoods){
+//        int height = lifeFormHoods.getHeight() + 1, width = lifeFormHoods.getWidth() + 1;
+        System.out.println("height: " + height + " width: " + width);
+        System.out.println("The population model is: hello\n");
+
+        System.out.println();
+        for(int row = 0; row < height; row++) {
+            for(int col = 0; col <  width; col++) {
+                    System.out.print(lifeFormHoods.isAliveAt(new Point(row, col)) ? 'o' : '.');
             }
             System.out.print('\n');
         }

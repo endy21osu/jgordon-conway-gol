@@ -2,99 +2,151 @@ package com.icc.service;
 
 import com.icc.model.*;
 
-import java.io.*;
-
 /**
  * Created by endocron on 2/25/2016.
  */
 public class LifeHelper {
 
-    public static int countLines(String filename) throws IOException {
-        InputStream is = new BufferedInputStream(new FileInputStream(filename));
-        try {
-            byte[] c = new byte[1024];
-            int count = 0;
-            int readChars = 0;
-            boolean empty = true;
-            while ((readChars = is.read(c)) != -1) {
-                empty = false;
-                for (int i = 0; i < readChars; ++i) {
-                    if (c[i] == '\n') {
-                        ++count;
-                    }
-                }
-            }
-            return (count == 0 && !empty) ? 1 : count;
-        } finally {
-            is.close();
-        }
-    }
+    public int callcountWhoIsAround = 0;
+    public int callcountprocessGeneration = 0;
+    public int callcountwhoIsAroundNew = 0;
+    public int callcountlifeSurvivesAt = 0;
+    public int callcountlifeCreatesAt = 0;
 
     public Population processGeneration(Population pop) {
-        discoverNeighbors(pop.getMembers());
-        return makeNewLife(pop);
+        callcountprocessGeneration++;
+        LifeFormNeighborhoods lfHoods = pop.getMembers();
+        LifeFormNeighborhoods newHoods = new LifeFormNeighborhoods();
 
+        lfHoods.getNeighborsHoods().forEach((row,address) ->
+                address.getLifeForms().forEach((col) ->
+                whoIsAround(new Point(row, col), pop, newHoods)));
+
+        pop.setMembers(newHoods);
+
+        return pop;
     }
 
-    private void discoverNeighbors(LifeForm[][] members) {
-        for(int row = 0; row < members.length; row++) {
-            for(int col = 0; col < members[row].length; col++) {
-                members[row][col] = whoIsAround(members[row][col], members);
-            }
-        }
-    }
+    private void whoIsAround(Point p, Population pop, LifeFormNeighborhoods newHoods) {
+        callcountWhoIsAround++;
+        int scope = 1, row = p.getRow(), col = p.getColumn(), neighbors = 0;
+        int width = pop.getWidth(), height = pop.getHeight();
+        LifeFormNeighborhoods lfHoods = pop.getMembers();
+        Point nP;
 
-    private LifeForm whoIsAround(LifeForm lifeForm, LifeForm[][] members) {
-        int scope = 1; int row = lifeForm.getLocation().getRow(); int col = lifeForm.getLocation().getColumn();
+//        System.out.print("The whoIsAround\n");
+//        System.out.println("Point " + p.getRow() + ", "+ p.getColumn());
+//        System.out.print("The lfHoods\n");
+//        printCurrentPopulationIn(lfHoods);
+//        System.out.print("The newHoods\n");
+//        printCurrentPopulationIn(newHoods);
 
         for(int rA = -scope; rA <= scope; rA++){
             for(int cA = -scope; cA <= scope; cA++){
                 if(!(cA == 0 && rA == 0)) {
                     int nRow = row + rA;
                     int nCol = col + cA;
-
-                    if (nRow >= 0 && nCol >= 0 && nRow < members.length && nCol < members[0].length)
-                        if (members[nRow][nCol].isAlive())
-                            lifeForm.setNeighbor(new Point(nRow, nCol));
-
+                    if(nRow >= 0 && nCol >= 0 && nCol <= width && nRow <= height) {
+                        nP = new Point(nRow, nCol);
+                        if (lfHoods.isAliveAt(nP)) {
+                            neighbors++;
+                        } else {
+                            newHoods = whoIsAroundNew(nP, pop, newHoods);
+                        }
+                    }
                 }
             }
         }
 
-        return lifeForm;
+        newHoods = lifeSurvivesAt(p, newHoods, neighbors);
+
+//        System.out.print("The after\n");
+//        System.out.print("The lfHoods\n");
+//        printCurrentPopulationIn(lfHoods);
+//        System.out.print("The newHoods\n");
+//        printCurrentPopulationIn(newHoods);
+
+
     }
 
-    private Population makeNewLife(Population pop){
-        LifeForm[][] members = pop.getMembers();
-        Population newPop = new Population(pop.getMembers().length, pop.getMembers()[0].length);
-        LifeForm[][] newMembers = newPop.getMembers();
+    private LifeFormNeighborhoods lifeSurvivesAt(Point p, LifeFormNeighborhoods lfHoods, Integer numberOfNeighbors){
+          callcountlifeSurvivesAt++;
+//        System.out.println("numberOfNeighbors: " + numberOfNeighbors);
+//        System.out.println("Point: " + p.getRow() + ", " + p.getColumn());
+//        printCurrentPopulationIn(lfHoods);
 
-        LifeForm tempLifeForm;
-
-        for(int row = 0; row < members.length; row++) {
-            for(int col = 0; col < members[row].length; col++) {
-
-                tempLifeForm = members[row][col];
-
-                int numberOfNeighbors = tempLifeForm.getNumberOfneighbors();
-
-                if(tempLifeForm.isAlive())
-                    if(2 == numberOfNeighbors || 3 == numberOfNeighbors)
-                        tempLifeForm.create();
-                    else
-                        tempLifeForm.kill();
-                else
-                if(numberOfNeighbors == 3)
-                    tempLifeForm.create();
-                else
-                    tempLifeForm.kill();
-
-                newMembers[row][col] = tempLifeForm;
+        if(2 == numberOfNeighbors || 3 == numberOfNeighbors)
+            lfHoods.createLifeAt(p);
 
 
+//        printCurrentPopulationIn(lfHoods);
+        return lfHoods;
+
+    }
+
+    private LifeFormNeighborhoods whoIsAroundNew(Point p, Population pop, LifeFormNeighborhoods newHoods) {
+        callcountwhoIsAroundNew++;
+        int scope = 1, row = p.getRow(), col = p.getColumn(), neighbors = 0;
+        int width = pop.getWidth(), height = pop.getHeight();
+        LifeFormNeighborhoods lfHoods = pop.getMembers();
+        Point nP;
+
+//        System.out.print("The whoIsAroundNew\n");
+//        System.out.println("Point " + p.getRow() + ", "+ p.getColumn());
+//        System.out.print("The lfHoods\n");
+//        printCurrentPopulationIn(lfHoods);
+//        System.out.print("The newHoods\n");
+//        printCurrentPopulationIn(newHoods);
+
+
+        for(int rA = -scope; rA <= scope; rA++){
+            for(int cA = -scope; cA <= scope; cA++){
+                if(!(cA == 0 && rA == 0)) {
+                    int nRow = row + rA;
+                    int nCol = col + cA;
+                    if(nRow >= 0 && nCol >= 0 && nCol <= width && nRow <= height) {
+                        nP = new Point(nRow, nCol);
+                        if (lfHoods.isAliveAt(nP))
+                            neighbors++;
+                    }
+                }
             }
         }
 
-        return newPop;
+        newHoods = lifeIsCreatedAt(p, newHoods, neighbors);
+
+//        System.out.print("The after\n");
+//        System.out.print("The lfHoods\n");
+//        printCurrentPopulationIn(lfHoods);
+//        System.out.print("The newHoods\n");
+//        printCurrentPopulationIn(newHoods);
+
+
+        return newHoods;
+
     }
+
+    private LifeFormNeighborhoods lifeIsCreatedAt(Point p, LifeFormNeighborhoods lfHoods, Integer numberOfNeighbors){
+//        System.out.println("numberOfNeighbors: " + numberOfNeighbors);
+//        System.out.println("Point: " + p.getRow() + ", " + p.getColumn());
+//        printCurrentPopulationIn(lfHoods);
+        callcountlifeCreatesAt++;
+        if(numberOfNeighbors == 3)
+            lfHoods.createLifeAt(p);
+
+//        printCurrentPopulationIn(lfHoods);
+        return lfHoods;
+
+    }
+
+    public void printCurrentPopulationIn(LifeFormNeighborhoods lifeFormHoods){
+        System.out.print("Current Pop is: \n");
+        lifeFormHoods.getNeighborsHoods().forEach((row, lfHoods) -> {
+            lfHoods.getLifeForms().forEach((col) ->
+                System.out.print("[" + row + ", " + col + "], "));
+            System.out.print("\n");
+        });
+        System.out.print("\n");
+    }
+
 }
